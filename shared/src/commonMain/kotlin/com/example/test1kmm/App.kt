@@ -22,23 +22,22 @@ fun App(
         darkTheme = darkTheme,
         dynamicColor = dynamicColor
     ) {
-//        val viewModel = getViewModel(
-//            key = "contact-list-screen",
-//            factory = viewModelFactory {
-//                ContactListViewModel(appModule.contactDataSource)
-//            }
-//        )
-//        val state by viewModel.state.collectAsState()
-//        Surface(
-//            modifier = Modifier.fillMaxSize(),
-//            color = MaterialTheme.colorScheme.background
-//        ) {
-//            ContactListScreen(
-//                state = state,
-//                newContact = viewModel.newContact,
-//                onEvent = viewModel::onEvent,
-//                imagePicker = imagePicker
-//            )
-//        }
+        val viewModel = getViewModel(
+            key = "contact-list-screen",
+            factory = viewModelFactory {
+                ContactListViewModel()
+            }
+        )
+        val state by viewModel.state.collectAsState()
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = MaterialTheme.colorScheme.background
+        ) {
+            ContactListScreen(
+                state = state,
+                newContact = viewModel.newContact,
+                onEvent = viewModel::onEvent
+            )
+        }
     }
 }
