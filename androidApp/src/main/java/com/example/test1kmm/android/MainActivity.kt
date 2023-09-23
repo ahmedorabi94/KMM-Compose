@@ -8,8 +8,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.test1kmm.App
+import com.example.test1kmm.di.AppModule
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,7 +20,8 @@ class MainActivity : ComponentActivity() {
 
             App(
                darkTheme = isSystemInDarkTheme(),
-                dynamicColor = true
+                dynamicColor = true,
+                appModule = AppModule(LocalContext.current.applicationContext)
             )
 //            MyApplicationTheme {
 //                Surface(
