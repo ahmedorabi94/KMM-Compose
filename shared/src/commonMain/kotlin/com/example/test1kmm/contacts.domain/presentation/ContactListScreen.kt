@@ -25,7 +25,7 @@ import com.example.test1kmm.contacts.domain.presentation.components.ContactListI
 @Composable
 fun ContactListScreen(
     state: ContactListViewState,
-    newContact: Contact,
+    newContact: Contact?,
     onEvent: (ContactsListEvents) -> Unit
 ) {
 
