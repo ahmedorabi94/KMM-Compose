@@ -24,12 +24,17 @@ kotlin {
     }
     
     listOf(
-        iosX64(),
-        iosArm64(),
-        iosSimulatorArm64()
+        //  iosX64(),
+        //  ios(),
+        //  iosArm64(),
+        iosSimulatorArm64(),
+        //  ios(),
     ).forEach {
         it.binaries.framework {
             baseName = "shared"
+            binaryOption("bundleId", "com.example.test1kmm.shared")
+            linkerOpts  += "-ld64"
+
         }
     }
 
@@ -66,39 +71,57 @@ kotlin {
             dependencies {
                 implementation("com.squareup.sqldelight:android-driver:1.5.5")
                 implementation("androidx.appcompat:appcompat:1.6.1")
-                implementation("androidx.activity:activity-compose:1.7.2")
+                implementation("androidx.activity:activity-compose:1.8.0")
             }
         }
         val androidUnitTest by getting
 
         ///////////////////IOS/////////////////////////////////
 
-        val iosX64Main by getting
-        val iosArm64Main by getting
-        val iosSimulatorArm64Main by getting
+//        val iosX64Main by getting
+//        val iosArm64Main by getting
+//        val iosSimulatorArm64Main by getting
+//        val iosMain by getting {
+//            dependencies {
+//                implementation("com.squareup.sqldelight:native-driver:1.5.5")
+//            }
+//            dependsOn(commonMain)
+//            iosX64Main.dependsOn(this)
+//            iosArm64Main.dependsOn(this)
+//            iosSimulatorArm64Main.dependsOn(this)
+//        }
+//        val iosX64Test by getting
+//        val iosArm64Test by getting
+//        val iosSimulatorArm64Test by getting
+//        val iosTest by getting {
+//            dependsOn(commonTest)
+//            iosX64Test.dependsOn(this)
+//            iosArm64Test.dependsOn(this)
+//            iosSimulatorArm64Test.dependsOn(this)
+//        }
+
+
         val iosMain by getting {
             dependencies {
+                // implementation("io.ktor:ktor-client-darwin:2.2.4")
+                // implementation("io.ktor:ktor-client-ios:2.2.4")
                 implementation("com.squareup.sqldelight:native-driver:1.5.5")
+
             }
-            dependsOn(commonMain)
-            iosX64Main.dependsOn(this)
-            iosArm64Main.dependsOn(this)
-            iosSimulatorArm64Main.dependsOn(this)
         }
-        val iosX64Test by getting
-        val iosArm64Test by getting
-        val iosSimulatorArm64Test by getting
-        val iosTest by getting {
-            dependsOn(commonTest)
-            iosX64Test.dependsOn(this)
-            iosArm64Test.dependsOn(this)
-            iosSimulatorArm64Test.dependsOn(this)
+        val iosTest by getting
+        val iosSimulatorArm64Main by getting {
+            dependsOn(iosMain)
         }
-
-
+        val iosSimulatorArm64Test by getting {
+            dependsOn(iosTest)
+        }
 
 
     }
+
+
+
 }
 
 sqldelight{
