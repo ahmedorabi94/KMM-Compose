@@ -19,15 +19,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.test1kmm.contacts.domain.Contact
+import com.example.test1kmm.contacts.domain.presentation.components.AddContactSheet
 import com.example.test1kmm.contacts.domain.presentation.components.ContactListItem
+import com.example.test1kmm.core.ImagePicker
 
 
 @Composable
 fun ContactListScreen(
     state: ContactListViewState,
     newContact: Contact?,
-    onEvent: (ContactsListEvents) -> Unit
+    onEvent: (ContactsListEvents) -> Unit,
+    imagePicker: ImagePicker
 ) {
+
+    imagePicker.registerPicker { imageBytes ->
+        onEvent(ContactsListEvents.OnPhotoClicked(imageBytes))
+    }
+
 
     Scaffold(
         floatingActionButton = {
@@ -75,5 +83,23 @@ fun ContactListScreen(
         }
 
     }
+
+
+//    ContactDetailSheet(
+//        isOpen = state.isSelectedContactSheetOpen,
+//        selectedContact = state.selectedContact,
+//        onEvent = onEvent,
+//    )
+    AddContactSheet(
+        state = state,
+        newContact = newContact,
+        isOpen = state.isAddContactSheetOpen,
+        onEvent = { event ->
+            if(event is ContactsListEvents.OnAddPhotoClicked) {
+                imagePicker.pickImage()
+            }
+            onEvent(event)
+        },
+    )
 
 }

@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.test1kmm.App
+import com.example.test1kmm.core.ImagePickerFactory
 import com.example.test1kmm.di.AppModule
 
 class MainActivity : ComponentActivity() {
@@ -21,7 +22,8 @@ class MainActivity : ComponentActivity() {
             App(
                darkTheme = isSystemInDarkTheme(),
                 dynamicColor = true,
-                appModule = AppModule(LocalContext.current.applicationContext)
+                appModule = AppModule(LocalContext.current.applicationContext),
+                imagePicker = ImagePickerFactory().createPicker()
             )
 //            MyApplicationTheme {
 //                Surface(

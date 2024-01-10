@@ -9,6 +9,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import com.example.test1kmm.contacts.domain.presentation.ContactListScreen
 import com.example.test1kmm.core.ContactsTheme
+import com.example.test1kmm.core.ImagePicker
 import com.example.test1kmm.di.AppModule
 
 import dev.icerock.moko.mvvm.compose.getViewModel
@@ -18,7 +19,8 @@ import dev.icerock.moko.mvvm.compose.viewModelFactory
 fun App(
     darkTheme: Boolean,
     dynamicColor: Boolean,
-    appModule: AppModule
+    appModule: AppModule,
+    imagePicker: ImagePicker
 ) {
     ContactsTheme(
         darkTheme = darkTheme,
@@ -38,7 +40,8 @@ fun App(
             ContactListScreen(
                 state = state,
                 newContact = viewModel.newContact,
-                onEvent = viewModel::onEvent
+                onEvent = viewModel::onEvent,
+                imagePicker = imagePicker
             )
         }
     }
