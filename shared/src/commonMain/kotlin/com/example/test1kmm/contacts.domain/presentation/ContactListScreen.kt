@@ -3,6 +3,7 @@ package com.example.test1kmm.contacts.domain.presentation
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -20,7 +21,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.test1kmm.contacts.domain.Contact
 import com.example.test1kmm.contacts.domain.presentation.components.AddContactSheet
+import com.example.test1kmm.contacts.domain.presentation.components.ContactDetailSheet
 import com.example.test1kmm.contacts.domain.presentation.components.ContactListItem
+import com.example.test1kmm.contacts.domain.presentation.components.RecentlyAddedContacts
 import com.example.test1kmm.core.ImagePicker
 
 
@@ -31,12 +34,9 @@ fun ContactListScreen(
     onEvent: (ContactsListEvents) -> Unit,
     imagePicker: ImagePicker
 ) {
-
     imagePicker.registerPicker { imageBytes ->
         onEvent(ContactsListEvents.OnPhotoClicked(imageBytes))
     }
-
-
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(
@@ -47,25 +47,31 @@ fun ContactListScreen(
             ) {
                 Icon(
                     imageVector = Icons.Rounded.PersonAdd,
-                    contentDescription = "Add Contact"
+                    contentDescription = "Add contact"
                 )
-
             }
         }
     ) {
-
         LazyColumn(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxSize(),
             contentPadding = PaddingValues(vertical = 16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
-
         ) {
             item {
+                RecentlyAddedContacts(
+                    contacts = state.recentAddedContacts,
+                    onClick = {
+                        onEvent(ContactsListEvents.SelectContact(it))
+                    }
+                )
+            }
+
+            item {
                 Text(
-                    text = "My Contacts ${state.contacts.size}",
-                    modifier = Modifier.fillMaxWidth().padding(
-                        horizontal = 16.dp
-                    ),
+                    text = "My contacts (${state.contacts.size})",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
                     fontWeight = FontWeight.Bold
                 )
             }
@@ -73,33 +79,31 @@ fun ContactListScreen(
             items(state.contacts) { contact ->
                 ContactListItem(
                     contact = contact,
-                    modifier = Modifier.fillMaxWidth().clickable {
-                        onEvent(ContactsListEvents.SelectContact(contact))
-                    }.padding(horizontal = 16.dp)
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable {
+                            onEvent(ContactsListEvents.SelectContact(contact))
+                        }
+                        .padding(horizontal = 16.dp)
                 )
-
             }
-
         }
-
     }
 
-
-//    ContactDetailSheet(
-//        isOpen = state.isSelectedContactSheetOpen,
-//        selectedContact = state.selectedContact,
-//        onEvent = onEvent,
-//    )
+    ContactDetailSheet(
+        isOpen = state.isSelectedContactSheetOpen,
+        selectedContact = state.selectedContact,
+        onEvent = onEvent,
+    )
     AddContactSheet(
         state = state,
         newContact = newContact,
         isOpen = state.isAddContactSheetOpen,
         onEvent = { event ->
-            if(event is ContactsListEvents.OnAddPhotoClicked) {
+            if (event is ContactsListEvents.OnAddPhotoClicked) {
                 imagePicker.pickImage()
             }
             onEvent(event)
         },
     )
-
 }
